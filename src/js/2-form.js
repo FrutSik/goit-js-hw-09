@@ -1,9 +1,23 @@
 const formEl = document.querySelector('.feedback-form');
 
+function initForm() {
+  const lsData = getFromLS('feedback-form-state');
+  if (lsData) {
+    try {
+      formData.email = lsData.email || '';
+      formData.message = lsData.message || '';
+      formEl.elements.email.value = formData.email;
+      formEl.elements.message.value = formData.message;
+    } catch {}
+  }
+}
+
 let formData = {
   email: '',
   message: '',
 };
+
+document.addEventListener('DOMContentLoaded', initForm);
 
 formEl.addEventListener('input', e => {
   const email = e.currentTarget.elements.email.value;
@@ -31,18 +45,6 @@ formEl.addEventListener('submit', event => {
   localStorage.removeItem('feedback-form-state');
   formData = { email: '', message: '' };
   formEl.reset();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  const lsData = getFromLS('feedback-form-state');
-  if (lsData) {
-    try {
-      formData.email = lsData.email || '';
-      formData.message = lsData.message || '';
-      formEl.elements.email.value = formData.email;
-      formEl.elements.message.value = formData.message;
-    } catch (error) {}
-  }
 });
 
 function saveToLS(key, value) {
